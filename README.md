@@ -3,9 +3,22 @@ A ver, antes de leer estos articulos os aviso que vamos a necesitar librerias es
 cosas sin comernos la cabeza. Por eso teneis dos opciones, o importarlas vosotros manualmente o instalaros anaconda, 
 que es python igual pero con las librerias ya añadidas, podeis descargarlo [aquí](https://www.continuum.io/downloads).
 
-Api que parece mejor https://www.quandl.com/tools/python
+### Donde obtner la información
 
-Sitios de donde podemos sacar informacion:
+Esta página https://www.quandl.com/ va bien para eso, los datos de aceso son:
+
+- Usuario: iaoibex
+- Contraseña: IBEXPredictor
+
+Los datos los podemos obtener de forma manual o con la siguiente api: 
+
+- https://www.quandl.com/tools/python
+- https://www.quandl.com/docs/api?python
+
+Lo suyo sería que hiciesemos una clase paripe para guardar los datos en csv o algo así, que no será dificil y daba 
+nota.
+
+### Sitios de donde podemos sacar informacion
 - https://www.quantstart.com/articles/Forecasting-Financial-Time-Series-Part-1
 - http://francescopochetti.com/stock-market-prediction-part-introduction/
 - [Redes de neuronas](https://people.eecs.berkeley.edu/~akar/IITK_website/EE671/report_stock.pdf)
