@@ -15,7 +15,7 @@ def getIBEX35(type):
 
 
 def main():
-    getIBEX35('change')
+    getIBEX35('normal')
 
 
 if __name__ == '__main__':
