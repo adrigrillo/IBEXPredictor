@@ -22,6 +22,9 @@ Los datos los podemos obtener de forma manual o con la siguiente api:
 Lo suyo sería que hiciesemos una clase paripe para guardar los datos en csv o algo así, que no será dificil y daba 
 nota.
 
+### Usados para python
+- http://machinelearningmastery.com/time-series-prediction-lstm-recurrent-neural-networks-python-keras/
+
 ### Sitios de donde podemos sacar informacion
 - https://www.quantstart.com/articles/Forecasting-Financial-Time-Series-Part-1
 - http://francescopochetti.com/stock-market-prediction-part-introduction/
