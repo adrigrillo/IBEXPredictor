@@ -2,31 +2,11 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as mpl
-from pandas.io.tests.parser import usecols
-from sklearn.preprocessing import scale
-import tensorflow as tf
 import matplotlib.pylab as plt
 from matplotlib.pylab import rcParams
+from statsmodels.tsa.arima_model import ARIMA
 
 rcParams['figure.figsize'] = 15, 6
-
-
-def realPlot():
-    """
-    Metodo que dibuja la grafica de los datos reales obtenidos de un documento
-    :return: Grafica de los datos
-    """
-    documento = '../data/mod1'
-    A = np.loadtxt(documento, delimiter=',', skiprows=1, usecols=(1, 5))
-    A = scale(A)
-    #y is the dependent variable
-    y = A[:, 1].reshape(-1, 1)
-    #A contains the independent variable
-    A = A[:, 0].reshape(-1, 1)
-    #Plot the high value of the stock price
-    mpl.plot(A[:, 0], y[:, 0])
-    mpl.show()
 
 
 def readData():
@@ -37,9 +17,37 @@ def readData():
     """
     transFecha = lambda fecha: pd.datetime.strptime(fecha, '%Y-%m-%d')
     data = pd.read_csv('../data/Ibex35Normal', parse_dates=[0], index_col=0, date_parser=transFecha, usecols=[0,6])
-    dt = pd.DataFrame(data)     #Convierte la tabla en un dataframe para acceder mejor a los datos
-    plt.plot(dt)
+    timeSerie = pd.DataFrame(data)     #Convierte la tabla en un dataframe para acceder mejor a los datos
+    plt.plot(timeSerie["2016"])
+    #plt.show()
+    return timeSerie["2016"]
+
+
+def comprobar_estacionalidad(timeSerie):
+
+    #Determing rolling statistics
+    rolmean = timeSerie.rolling(window=5, center=False).mean()
+    rolstd = timeSerie.rolling(window=5, center=False).std()
+
+    #Plot rolling statistics:
+    orig = plt.plot(timeSerie, color='blue',label='Original')
+    mean = plt.plot(rolmean, color='red', label='Rolling Mean')
+    std = plt.plot(rolstd, color='black', label = 'Rolling Std')
+    plt.legend(loc='best')
+    plt.title('Rolling Mean & Standard Deviation')
     plt.show()
 
 
-readData()
+def models(ts):
+    ts_log = np.log(ts)
+    ts_log_diff = ts_log - ts_log.shift()
+    model = ARIMA(ts_log, order=(1, 0, 1))
+    results_AR = model.fit(disp=-1)
+    plt.plot(ts_log_diff)
+    plt.plot(results_AR.fittedvalues, color='red')
+    plt.show()
+
+
+serie = readData()
+#comprobar_estacionalidad(serie)
+models(serie)
