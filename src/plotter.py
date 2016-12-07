@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 
 def plot_data(data, title):
     plot = data.plot(title=title)
-    plot.set_xlabel("Fecha")
-    plot.set_ylabel("Datos")
+    plot.set_xlabel("Datos")
+    plot.set_ylabel("Fecha")
     plt.show()
 
 
