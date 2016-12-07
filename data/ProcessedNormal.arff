@@ -1,6 +1,6 @@
 @relation "ProcessedNormal"
 
-@attribute Date STRING
+@attribute Date DATE
 @attribute INDEX_IBEX NUMERIC
 @attribute INDEX_DJI NUMERIC
 @attribute INDEX_STOXX50E NUMERIC
