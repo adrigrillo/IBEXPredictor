@@ -1,4 +1,5 @@
 import quandl
+import pandas as pd
 quandl.ApiConfig.api_key = 'zxkqftXuQ9RAbjWsw_E2'
 
 
@@ -121,14 +122,106 @@ def getAll(type):
         data.to_csv(path_or_buf='../data/AllNormalize', sep=',')
     print('All in one done')
 
+
+def closeAll(type):
+    """ Metodo que creara dos csv, uno con los datos de cierre de las bolsas a estudiar y otro con los resultados
+        del ibex de ese mismo dia, que posteriomente correremos una posicion para tomarlo como prediccion
+    :param type: Los tipos de datos a obtener, ya sean valores normales o cambio
+    :return: csv con los datos
+    """
+    """ Guardamos los datos de cierre del ibex, que es nuestro oobjetivo """
+    next_day = quandl.get('YAHOO/INDEX_IBEX.4', start_date='2005-01-01', collapse='daily', transform='diff')
+    next_day.to_csv(path_or_buf='../data/NextDay', sep=',')
+    """ Guardamos los datos de cierre de las demas bolsas de estudio """
+    if type == 'normal' or type == 'all':
+        data = quandl.get(['YAHOO/INDEX_IBEX.4', 'YAHOO/INDEX_DJI.4', 'YAHOO/INDEX_STOXX50E.4', 'YAHOO/INDEX_N225.4',
+                           'YAHOO/INDEX_FCHI.4', 'YAHOO/INDEX_GDAXI.4'], start_date='2005-01-01', collapse='daily')
+        data.to_csv(path_or_buf='../data/CloseNormal', sep=',')
+    if type == 'change' or type == 'all':
+        data = quandl.get(['YAHOO/INDEX_IBEX.4', 'YAHOO/INDEX_DJI.4', 'YAHOO/INDEX_STOXX50E.4', 'YAHOO/INDEX_N225.4',
+                           'YAHOO/INDEX_FCHI.4', 'YAHOO/INDEX_GDAXI.4', 'YAHOO/INDEX_IBEX.4'], start_date='2005-01-01',
+                          collapse='daily', transform="diff")
+        data.to_csv(path_or_buf='../data/CloseChange', sep=',')
+    if type == 'rchange' or type == 'all':
+        data = quandl.get(['YAHOO/INDEX_IBEX.4', 'YAHOO/INDEX_DJI.4', 'YAHOO/INDEX_STOXX50E.4', 'YAHOO/INDEX_N225.4',
+                           'YAHOO/INDEX_FCHI.4', 'YAHOO/INDEX_GDAXI.4', 'YAHOO/INDEX_IBEX.4'], start_date='2005-01-01',
+                          collapse='daily', transform="rdiff")
+        data.to_csv(path_or_buf='../data/CloseRChange', sep=',')
+    if type == 'normalize' or type == 'all':
+        data = quandl.get(['YAHOO/INDEX_IBEX.4', 'YAHOO/INDEX_DJI.4', 'YAHOO/INDEX_STOXX50E.4', 'YAHOO/INDEX_N225.4',
+                           'YAHOO/INDEX_FCHI.4', 'YAHOO/INDEX_GDAXI.4', 'YAHOO/INDEX_IBEX.4'], start_date='2005-01-01',
+                          collapse='daily', transform="normalize")
+        data.to_csv(path_or_buf='../data/CloseNormalize', sep=',')
+    print('Closing done')
+
+
+def final_data_creator(type):
+    """
+    Este metodo cambiara los resultados de los datos del dia siguiente a 1 si sube y 0 si baja o se mantiene igual
+    que el dia anterior. Ademas une las predicciones a los datos anteriores
+    :param type:
+    :return:
+    """
+    next_day = pd.read_csv('../data/NextDay', index_col='Date', parse_dates=True, na_values=['nan'])
+    """ Cambiamos los resultados por 1 si sube y 0 si baja """
+    next_day.loc[next_day['Close'] > 0, 'Close'] = 1
+    next_day.loc[next_day['Close'] <= 0, 'Close'] = 0
+    """ Subimos los resultados un dia para que pasen a ser predicciones del dia siguiente """
+    next_day.Close = next_day.Close.shift(-1)
+    if type == 'normal' or type == 'all':
+        closings = pd.read_csv('../data/CloseNormal', index_col='Date', parse_dates=True, na_values=['nan'])
+        closings = closings.join(next_day)
+        """ Con esto eliminamos los datos de los dias en los que el ibex no opera """
+        closings = closings.dropna(subset=['Close'])
+        """ Si algun mercado secundario no abre un dia se rellenan sus datos con el dia anterior para la prediccion """
+        closings.fillna(method='ffill', inplace="TRUE")
+        closings.fillna(method='bfill', inplace="TRUE")
+        """ Guardamos """
+        closings.to_csv(path_or_buf='../data/ProcesedNormal.csv', sep=',')
+    if type == 'change' or type == 'all':
+        closings = pd.read_csv('../data/CloseChange', index_col='Date', parse_dates=True, na_values=['nan'])
+        closings = closings.join(next_day)
+        """ Con esto eliminamos los datos de los dias en los que el ibex no opera """
+        closings = closings.dropna(subset=['Close'])
+        """ Si algun mercado secundario no abre un dia se rellenan sus datos con el dia anterior para la prediccion """
+        closings.fillna(method='ffill', inplace="TRUE")
+        closings.fillna(method='bfill', inplace="TRUE")
+        """ Guardamos """
+        closings.to_csv(path_or_buf='../data/ProcesedChange.csv', sep=',')
+    if type == 'rchange' or type == 'all':
+        closings = pd.read_csv('../data/CloseRChange', index_col='Date', parse_dates=True, na_values=['nan'])
+        closings = closings.join(next_day)
+        """ Con esto eliminamos los datos de los dias en los que el ibex no opera """
+        closings = closings.dropna(subset=['Close'])
+        """ Si algun mercado secundario no abre un dia se rellenan sus datos con el dia anterior para la prediccion """
+        closings.fillna(method='ffill', inplace="TRUE")
+        closings.fillna(method='bfill', inplace="TRUE")
+        """ Guardamos """
+        closings.to_csv(path_or_buf='../data/ProcesedRChange.csv', sep=',')
+    if type == 'normalize' or type == 'all':
+        closings = pd.read_csv('../data/CloseNormalize', index_col='Date', parse_dates=True, na_values=['nan'])
+        closings = closings.join(next_day)
+        """ Con esto eliminamos los datos de los dias en los que el ibex no opera """
+        closings = closings.dropna(subset=['Close'])
+        """ Si algun mercado secundario no abre un dia se rellenan sus datos con el dia anterior para la prediccion """
+        closings.fillna(method='ffill', inplace="TRUE")
+        closings.fillna(method='bfill', inplace="TRUE")
+        """ Guardamos """
+        closings.to_csv(path_or_buf='../data/ProcesedNormalized.csv', sep=',')
+    print('Data processing done')
+
+
 def main():
-    """getIBEX35('all')
+    getIBEX35('all')
     getDowJones('all')
     getNikkei('all')
     getEuroStock('all')
     getGermanyStock('all')
-    getFranceStock('all')"""
+    getFranceStock('all')
     getAll('all')
+    closeAll('all')
+    final_data_creator('all')
+
 
 if __name__ == '__main__':
     main()
