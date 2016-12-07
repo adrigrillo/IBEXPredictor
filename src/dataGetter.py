@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 import quandl
 import pandas as pd
 quandl.ApiConfig.api_key = 'zxkqftXuQ9RAbjWsw_E2'
@@ -177,7 +179,7 @@ def final_data_creator(type):
         closings.fillna(method='ffill', inplace="TRUE")
         closings.fillna(method='bfill', inplace="TRUE")
         """ Guardamos """
-        closings.to_csv(path_or_buf='../data/ProcesedNormal.csv', sep=',')
+        closings.to_csv(path_or_buf='../data/ProcessedNormal.csv', sep=',')
     if type == 'change' or type == 'all':
         closings = pd.read_csv('../data/CloseChange', index_col='Date', parse_dates=True, na_values=['nan'])
         closings = closings.join(next_day)
@@ -187,7 +189,7 @@ def final_data_creator(type):
         closings.fillna(method='ffill', inplace="TRUE")
         closings.fillna(method='bfill', inplace="TRUE")
         """ Guardamos """
-        closings.to_csv(path_or_buf='../data/ProcesedChange.csv', sep=',')
+        closings.to_csv(path_or_buf='../data/ProcessedChange.csv', sep=',')
     if type == 'rchange' or type == 'all':
         closings = pd.read_csv('../data/CloseRChange', index_col='Date', parse_dates=True, na_values=['nan'])
         closings = closings.join(next_day)
@@ -197,7 +199,7 @@ def final_data_creator(type):
         closings.fillna(method='ffill', inplace="TRUE")
         closings.fillna(method='bfill', inplace="TRUE")
         """ Guardamos """
-        closings.to_csv(path_or_buf='../data/ProcesedRChange.csv', sep=',')
+        closings.to_csv(path_or_buf='../data/ProcessedRChange.csv', sep=',')
     if type == 'normalize' or type == 'all':
         closings = pd.read_csv('../data/CloseNormalize', index_col='Date', parse_dates=True, na_values=['nan'])
         closings = closings.join(next_day)
@@ -207,7 +209,7 @@ def final_data_creator(type):
         closings.fillna(method='ffill', inplace="TRUE")
         closings.fillna(method='bfill', inplace="TRUE")
         """ Guardamos """
-        closings.to_csv(path_or_buf='../data/ProcesedNormalized.csv', sep=',')
+        closings.to_csv(path_or_buf='../data/ProcessedNormalized.csv', sep=',')
     print('Data processing done')
 
 
