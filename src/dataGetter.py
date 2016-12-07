@@ -141,17 +141,17 @@ def closeAll(type):
         data.to_csv(path_or_buf='../data/CloseNormal', sep=',')
     if type == 'change' or type == 'all':
         data = quandl.get(['YAHOO/INDEX_IBEX.4', 'YAHOO/INDEX_DJI.4', 'YAHOO/INDEX_STOXX50E.4', 'YAHOO/INDEX_N225.4',
-                           'YAHOO/INDEX_FCHI.4', 'YAHOO/INDEX_GDAXI.4', 'YAHOO/INDEX_IBEX.4'], start_date='2005-01-01',
+                           'YAHOO/INDEX_FCHI.4', 'YAHOO/INDEX_GDAXI.4'], start_date='2005-01-01',
                           collapse='daily', transform="diff")
         data.to_csv(path_or_buf='../data/CloseChange', sep=',')
     if type == 'rchange' or type == 'all':
         data = quandl.get(['YAHOO/INDEX_IBEX.4', 'YAHOO/INDEX_DJI.4', 'YAHOO/INDEX_STOXX50E.4', 'YAHOO/INDEX_N225.4',
-                           'YAHOO/INDEX_FCHI.4', 'YAHOO/INDEX_GDAXI.4', 'YAHOO/INDEX_IBEX.4'], start_date='2005-01-01',
+                           'YAHOO/INDEX_FCHI.4', 'YAHOO/INDEX_GDAXI.4'], start_date='2005-01-01',
                           collapse='daily', transform="rdiff")
         data.to_csv(path_or_buf='../data/CloseRChange', sep=',')
     if type == 'normalize' or type == 'all':
         data = quandl.get(['YAHOO/INDEX_IBEX.4', 'YAHOO/INDEX_DJI.4', 'YAHOO/INDEX_STOXX50E.4', 'YAHOO/INDEX_N225.4',
-                           'YAHOO/INDEX_FCHI.4', 'YAHOO/INDEX_GDAXI.4', 'YAHOO/INDEX_IBEX.4'], start_date='2005-01-01',
+                           'YAHOO/INDEX_FCHI.4', 'YAHOO/INDEX_GDAXI.4'], start_date='2005-01-01',
                           collapse='daily', transform="normalize")
         data.to_csv(path_or_buf='../data/CloseNormalize', sep=',')
     print('Closing done')
