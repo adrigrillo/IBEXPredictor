@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import math as mt
 
-from clyent import color
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import LSTM
@@ -27,7 +26,7 @@ def main():
     transFecha = lambda fecha: pd.datetime.strptime(fecha, '%Y-%m-%d')
     dataReal = pd.read_csv('../data/Ibex35Normal', engine='python', parse_dates=[0], index_col=0,
                             date_parser=transFecha, usecols=[0,6], skipfooter=3)
-    adjClose = pd.read_csv('../data/Ibex35Normal', usecols=[6], engine='python')
+    adjClose = pd.read_csv('../data/Ibex35Normalize', usecols=[6], engine='python')
     dataChange = adjClose.values
     dataChange = dataChange.astype('float32')
     scaler = MinMaxScaler(feature_range=(0, 1))
@@ -38,7 +37,7 @@ def main():
     print("Conjunto de entrenamiento, longitud: ", len(train))
     print("Conjunto de test, longitud: ",  len(test))
 
-    turnos_vista = 1
+    turnos_vista = 3
     trainX, trainY = crearDataset(train, turnos_vista)
     testX, testY = crearDataset(test, turnos_vista)
 
@@ -50,7 +49,7 @@ def main():
     model.add(LSTM(4, input_dim=turnos_vista))
     model.add(Dense(1))
     model.compile(loss='mean_squared_error', optimizer='adam')
-    model.fit(trainX, trainY, nb_epoch=20, batch_size=1, verbose=2)
+    model.fit(trainX, trainY, nb_epoch=3, batch_size=1, verbose=2)
     # make predictions
     trainPredict = model.predict(trainX)
     testPredict = model.predict(testX)
