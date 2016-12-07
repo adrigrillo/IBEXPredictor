@@ -100,34 +100,34 @@ def getFranceStock(type):
 
 def getAll(type):
     if type == 'normal' or type == 'all':
-        data = quandl.get(['YAHOO/INDEX_IBEX.6', 'YAHOO/INDEX_DJI.6', 'YAHOO/INDEX_STOXX50E.6', 'YAHOO/INDEX_N225.6',
-                           'YAHOO/INDEX_FCHI.6', 'YAHOO/INDEX_GDAXI.6', 'YAHOO/INDEX_IBEX.6'], start_date='2005-01-01',
+        data = quandl.get(['YAHOO/INDEX_IBEX.4', 'YAHOO/INDEX_DJI.4', 'YAHOO/INDEX_STOXX50E.4', 'YAHOO/INDEX_N225.4',
+                           'YAHOO/INDEX_FCHI.4', 'YAHOO/INDEX_GDAXI.4', 'YAHOO/INDEX_IBEX.4'], start_date='2005-01-01',
                           collapse='daily')
         data.to_csv(path_or_buf='../data/AllNormal', sep=',')
     if type == 'change' or type == 'all':
-        data = quandl.get(['YAHOO/INDEX_IBEX.6', 'YAHOO/INDEX_DJI.6', 'YAHOO/INDEX_STOXX50E.6', 'YAHOO/INDEX_N225.6',
-                           'YAHOO/INDEX_FCHI.6', 'YAHOO/INDEX_GDAXI.6', 'YAHOO/INDEX_IBEX.6'], start_date='2005-01-01',
+        data = quandl.get(['YAHOO/INDEX_IBEX.4', 'YAHOO/INDEX_DJI.4', 'YAHOO/INDEX_STOXX50E.4', 'YAHOO/INDEX_N225.4',
+                           'YAHOO/INDEX_FCHI.4', 'YAHOO/INDEX_GDAXI.4', 'YAHOO/INDEX_IBEX.4'], start_date='2005-01-01',
                           collapse='daily', transform="diff")
         data.to_csv(path_or_buf='../data/AllChange', sep=',')
     if type == 'rchange' or type == 'all':
-        data = quandl.get(['YAHOO/INDEX_IBEX.6', 'YAHOO/INDEX_DJI.6', 'YAHOO/INDEX_STOXX50E.6', 'YAHOO/INDEX_N225.6',
-                           'YAHOO/INDEX_FCHI.6', 'YAHOO/INDEX_GDAXI.6', 'YAHOO/INDEX_IBEX.6'], start_date='2005-01-01',
+        data = quandl.get(['YAHOO/INDEX_IBEX.4', 'YAHOO/INDEX_DJI.4', 'YAHOO/INDEX_STOXX50E.4', 'YAHOO/INDEX_N225.4',
+                           'YAHOO/INDEX_FCHI.4', 'YAHOO/INDEX_GDAXI.4', 'YAHOO/INDEX_IBEX.4'], start_date='2005-01-01',
                           collapse='daily', transform="rdiff")
         data.to_csv(path_or_buf='../data/AllRChange', sep=',')
     if type == 'normalize' or type == 'all':
-        data = quandl.get(['YAHOO/INDEX_IBEX.6', 'YAHOO/INDEX_DJI.6', 'YAHOO/INDEX_STOXX50E.6', 'YAHOO/INDEX_N225.6',
-                           'YAHOO/INDEX_FCHI.6', 'YAHOO/INDEX_GDAXI.6', 'YAHOO/INDEX_IBEX.6'], start_date='2005-01-01',
+        data = quandl.get(['YAHOO/INDEX_IBEX.4', 'YAHOO/INDEX_DJI.4', 'YAHOO/INDEX_STOXX50E.4', 'YAHOO/INDEX_N225.4',
+                           'YAHOO/INDEX_FCHI.4', 'YAHOO/INDEX_GDAXI.4', 'YAHOO/INDEX_IBEX.4'], start_date='2005-01-01',
                           collapse='daily', transform="normalize")
         data.to_csv(path_or_buf='../data/AllNormalize', sep=',')
     print('All in one done')
 
 def main():
-    getIBEX35('all')
+    """getIBEX35('all')
     getDowJones('all')
     getNikkei('all')
     getEuroStock('all')
     getGermanyStock('all')
-    getFranceStock('all')
+    getFranceStock('all')"""
     getAll('all')
 
 if __name__ == '__main__':
