@@ -62,6 +62,16 @@ def create_model():
     return model
 
 
+def saveModel(model):
+    """
+    Metodo que guarda el modelo por si quiere ser usado posteriormente
+    :param model: modelo utilizado
+    :return:
+    """
+    fecha = datetime.datetime.now().strftime("%d_%H:%M")
+    model.save(root + "Models/model" + fecha + ".h5")
+
+
 def automatic_cross_validation(X, Y):
     """
     Ejecucion del entrenamiento y test mediante cross validation
@@ -86,26 +96,18 @@ def training_test_manual(trainX, testX, trainY, testY):
     :return:
     """
     model = create_model()
-    model.fit(trainX, trainY, nb_epoch=100, batch_size=50, verbose=2)
+    model.fit(trainX, trainY, nb_epoch=500, verbose=2)
     resultados = model.evaluate(testX, testY, verbose=2)
     print("%s: %.2f%%" % (model.metrics_names[0], resultados[0]*100))
     print("%s: %.2f%%" % (model.metrics_names[1], resultados[1]*100))
     saveModel(model)
 
-
-def saveModel(model):
-    """
-    Metodo que guarda el modelo por si quiere ser usado posteriormente
-    :param model: modelo utilizado
-    :return:
-    """
-    fecha = datetime.datetime.now().strftime("%d_%H:%M")
-    model.save(root + "Models/model" + fecha + ".h5")
+# TODO: Hacer otros metodos de clasificacion
 
 
 def main():
     numpy.random.seed(seed)
-    fichero = "ProcessedRChange.csv"
+    fichero = "ProcessedChange.csv"
     trainX, testX, trainY, testY = create_training_test_dataset(fichero, 6, 0.9)
     training_test_manual(trainX, testX, trainY, testY)
     """X, Y = create_full_dataset(fichero, 6)
@@ -114,5 +116,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-
 
