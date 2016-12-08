@@ -54,9 +54,10 @@ def create_model():
     :return: Modelo de la red de neuronas
     """
     model = Sequential()
-    model.add(Dense(6, input_dim=6, init='normal', activation='relu'))
+    model.add(Dense(30, input_dim=30, init='normal', activation='relu'))
     model.add(Dropout(0.2))
-    model.add(Dense(3, activation='relu'))
+    model.add(Dense(15, activation='relu'))
+    model.add(Dropout(0.2))
     model.add(Dense(1, init='normal', activation='sigmoid'))
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
     return model
@@ -96,7 +97,7 @@ def training_test_manual(trainX, testX, trainY, testY):
     :return:
     """
     model = create_model()
-    model.fit(trainX, trainY, nb_epoch=500, verbose=2)
+    model.fit(trainX, trainY, nb_epoch=500, batch_size=20, verbose=2)
     resultados = model.evaluate(testX, testY, verbose=2)
     print("%s: %.2f%%" % (model.metrics_names[0], resultados[0]*100))
     print("%s: %.2f%%" % (model.metrics_names[1], resultados[1]*100))
@@ -107,11 +108,11 @@ def training_test_manual(trainX, testX, trainY, testY):
 
 def main():
     numpy.random.seed(seed)
-    fichero = "ProcessedChange.csv"
-    trainX, testX, trainY, testY = create_training_test_dataset(fichero, 6, 0.9)
-    training_test_manual(trainX, testX, trainY, testY)
-    """X, Y = create_full_dataset(fichero, 6)
-    automatic_cross_validation(X, Y)"""
+    fichero = "5DayRChange.csv"
+    """trainX, testX, trainY, testY = create_training_test_dataset(fichero, 30, 0.9)
+    training_test_manual(trainX, testX, trainY, testY)"""
+    X, Y = create_full_dataset(fichero, 30)
+    automatic_cross_validation(X, Y)
 
 
 if __name__ == '__main__':
