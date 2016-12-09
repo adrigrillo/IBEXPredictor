@@ -82,21 +82,21 @@ def saveModel(model, type):
             cPickle.dump(model, f, -1)
 
 
-def automatic_cross_validation(X, Y, epochs, batch, splits):
+def automatic_cross_validation(X, Y, epochs=200, batch=20, splits=5):
     """
     Ejecucion del entrenamiento y test mediante cross validation
     :param X: Conjuntos de variables
     :param Y: Salida del conjunto de variables
     :return:
     """
-    estimador = KerasClassifier(build_fn=create_model, nb_epoch=epochs, batch_size=batch, verbose=2)
+    estimador = KerasClassifier(build_fn=create_model, nb_epoch=epochs, batch_size=batch, verbose=0)
     kfold = StratifiedKFold(n_splits=splits, shuffle=True, random_state=seed)
     results = cross_val_score(estimador, X, Y, cv=kfold)
     print("Resultados: %.2f%% (%.2f%%)" % (results.mean()*100, results.std()*100))
-    saveModel(estimador.model, 1)
+    #saveModel(estimador.model, 1)
 
 
-def training_test_manual(trainX, testX, trainY, testY, epochs, batch):
+def training_test_manual(trainX, testX, trainY, testY, epochs=500, batch=20):
     """
     Entrenamiento y evaluacion manual de el modelo creado
     :param trainX: variables de entrada de entrenamiento
@@ -106,8 +106,8 @@ def training_test_manual(trainX, testX, trainY, testY, epochs, batch):
     :return:
     """
     model = create_model()
-    model.fit(trainX, trainY, nb_epoch=epochs, batch_size=batch, verbose=2)
-    resultados = model.evaluate(testX, testY, verbose=2)
+    model.fit(trainX, trainY, nb_epoch=epochs, batch_size=batch, verbose=0)
+    resultados = model.evaluate(testX, testY, verbose=0)
     print("%s: %.2f%%" % (model.metrics_names[0], resultados[0]*100))
     print("%s: %.2f%%" % (model.metrics_names[1], resultados[1]*100))
     saveModel(model, 1)
@@ -128,11 +128,11 @@ def support_vector_machine(trainX, testX, trainY, testY, kernel, C, gamma=0.1, d
     :return:
     """
     if kernel == 'linear':
-        svc = svm.SVC(kernel=kernel, C=C, verbose=1).fit(trainX, trainY)
+        svc = svm.SVC(kernel=kernel, C=C, verbose=0, cache_size=600).fit(trainX, trainY)
     if kernel == 'rbf':
-        svc = svm.SVC(kernel=kernel, gamma=gamma, C=C, verbose=1).fit(trainX, trainY)
+        svc = svm.SVC(kernel=kernel, gamma=gamma, C=C, verbose=1, cache_size=600).fit(trainX, trainY)
     if kernel == 'poly':
-        svc = svm.SVC(kernel=kernel, degree=degree, C=C, verbose=1).fit(trainX, trainY)
+        svc = svm.SVC(kernel=kernel, degree=degree, C=C, verbose=1, cache_size=600).fit(trainX, trainY)
     resultados = svc.score(testX, testY)
     print("Resultados: ", resultados*100, " %")
     saveModel(svc, 2)
@@ -148,7 +148,7 @@ def random_forest(trainX, testX, trainY, testY, estimadores=1000):
     :param estimadores: Numero de veces que se ejecutara la tarea
     :return:
     """
-    rfc = RandomForestClassifier(n_estimators=estimadores, n_jobs=-1, verbose=1)
+    rfc = RandomForestClassifier(n_estimators=estimadores, n_jobs=-1, verbose=0)
     rfc.fit(trainX, trainY)
     resultados = rfc.score(testX, testY)
     print("Resultados: ", resultados*100, " %")
@@ -173,7 +173,7 @@ def nearest_neighbors(trainX, testX, trainY, testY, vecinos=3, algoritmo='auto')
     saveModel(knn, 2)
 
 
-def selector(type_of_learning, fichero):
+def selector(type_of_learning, fichero, entradas):
     """
     Metodo para seleccionar un algoritmo para la clasificacion dado un fichero
     :param type_of_learning: algoritmos a utilizar
@@ -181,12 +181,12 @@ def selector(type_of_learning, fichero):
     :return:
     """
     if type_of_learning == 'auto_neural':
-        X, Y = create_full_dataset(fichero, 30)
-        automatic_cross_validation(X, Y, 200, 20, 5)
+        X, Y = create_full_dataset(fichero, entradas)
+        automatic_cross_validation(X, Y)
     else:
-        trainX, testX, trainY, testY = create_training_test_dataset(fichero, 30, 0.9)
+        trainX, testX, trainY, testY = create_training_test_dataset(fichero, entradas, 0.9)
         if type_of_learning == 'man_neural':
-            training_test_manual(trainX, testX, trainY, testY, 1000, 20)
+            training_test_manual(trainX, testX, trainY, testY, epochs=500)
         if type_of_learning == 'svm':
             support_vector_machine(trainX, testX, trainY, testY, 'linear', 0.2, gamma=0.3, degree=3)
         if type_of_learning == 'rfc':
@@ -197,8 +197,15 @@ def selector(type_of_learning, fichero):
 
 def main():
     numpy.random.seed(seed)
-    fichero = "5DayRChange.csv"
-    selector('rfc', fichero)
+    fichero = ["ProcessedNormal.csv", "ProcessedChange.csv", "ProcessedRChange.csv", "ProcessedNormalized.csv"]
+    fichero2 = ["5DayNormal.csv", "5DayChange.csv", "5DayRChange.csv", "5DayNormalized.csv"
+                ]
+    type_learning = ['auto_neural', 'man_neural', 'svm', 'rfc', 'knn']
+    for i in range(len(fichero)):
+        for j in range(len(type_learning)):
+            #selector(type_of_learning=type_learning[j], fichero=fichero[i], entradas=6)
+            selector(type_of_learning=type_learning[j], fichero=fichero2[i], entradas=30)
+
 
 
 if __name__ == '__main__':
