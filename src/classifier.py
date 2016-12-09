@@ -58,9 +58,9 @@ def create_model():
     :return: Modelo de la red de neuronas
     """
     model = Sequential()
-    model.add(Dense(30, input_dim=30, init='normal', activation='relu'))
+    model.add(Dense(6, input_dim=6, init='normal', activation='relu'))
     model.add(Dropout(0.2))
-    model.add(Dense(15, activation='relu'))
+    model.add(Dense(3, activation='relu'))
     model.add(Dropout(0.2))
     model.add(Dense(1, init='normal', activation='sigmoid'))
     model.compile(loss='binary_crossentropy', optimizer='Adam', metrics=['accuracy'])
@@ -203,8 +203,8 @@ def main():
     type_learning = ['auto_neural', 'man_neural', 'svm', 'rfc', 'knn']
     for i in range(len(fichero)):
         for j in range(len(type_learning)):
-            #selector(type_of_learning=type_learning[j], fichero=fichero[i], entradas=6)
-            selector(type_of_learning=type_learning[j], fichero=fichero2[i], entradas=30)
+            selector(type_of_learning=type_learning[j], fichero=fichero[i], entradas=6)
+            #selector(type_of_learning=type_learning[j], fichero=fichero2[i], entradas=30)
 
 
 
