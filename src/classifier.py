@@ -198,13 +198,14 @@ def selector(type_of_learning, fichero, entradas):
 def main():
     numpy.random.seed(seed)
     fichero = ["ProcessedNormal.csv", "ProcessedChange.csv", "ProcessedRChange.csv", "ProcessedNormalized.csv"]
-    fichero2 = ["5DayNormal.csv", "5DayChange.csv", "5DayRChange.csv", "5DayNormalized.csv"
-                ]
+    fichero2 = ["5DayNormal.csv", "5DayChange.csv", "5DayRChange.csv", "5DayNormalized.csv"]
     type_learning = ['auto_neural', 'man_neural', 'svm', 'rfc', 'knn']
-    for i in range(len(fichero)):
+    """ for i in range(len(fichero)):
         for j in range(len(type_learning)):
             selector(type_of_learning=type_learning[j], fichero=fichero[i], entradas=6)
-            #selector(type_of_learning=type_learning[j], fichero=fichero2[i], entradas=30)
+            selector(type_of_learning=type_learning[j], fichero=fichero2[i], entradas=30)
+    """
+    selector(type_of_learning=type_learning[1], fichero=fichero2[2], entradas=60)
 
 
 
