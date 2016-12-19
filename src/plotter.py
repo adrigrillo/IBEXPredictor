@@ -16,10 +16,11 @@ def main():
     :return: representacion de la grafica
     """
     raiz = '../data/'
-    fichero = 'ProcessedNormalized.csv'
+    fichero = 'ProcessedNormal.csv'
     data = pd.read_csv(filepath_or_buffer=raiz+fichero, index_col='Date', parse_dates=True)
-    plot_data(data, "Evolución de las bolsas de 2005-2016")
-
+    #plot_data(data, "Evolución de las bolsas de 2005-2016")
+    data.plot(y='Close')
+    plt.show()
 
 if __name__ == '__main__':
     main()
