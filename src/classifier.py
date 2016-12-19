@@ -60,9 +60,9 @@ def create_model():
     model = Sequential()
     model.add(Dense(30, input_dim=30, init='normal', activation='relu'))
     model.add(Dropout(0.2))
-    model.add(Dense(20, activation='relu'))
+    model.add(Dense(15, activation='relu'))
     model.add(Dropout(0.2))
-    model.add(Dense(10, activation='relu'))
+    model.add(Dense(7, activation='relu'))
     model.add(Dropout(0.2))
     model.add(Dense(1, init='normal', activation='sigmoid'))
     model.compile(loss='binary_crossentropy', optimizer='Adam', metrics=['accuracy'])
@@ -91,7 +91,7 @@ def automatic_cross_validation(X, Y, epochs=200, batch=20, splits=5):
     :param Y: Salida del conjunto de variables
     :return:
     """
-    estimador = KerasClassifier(build_fn=create_model, nb_epoch=epochs, batch_size=batch, verbose=0)
+    estimador = KerasClassifier(build_fn=create_model, nb_epoch=epochs, batch_size=batch, verbose=2)
     kfold = StratifiedKFold(n_splits=splits, shuffle=True, random_state=seed)
     results = cross_val_score(estimador, X, Y, cv=kfold)
     print("Resultados: %.2f%% (%.2f%%)" % (results.mean()*100, results.std()*100))
@@ -108,8 +108,8 @@ def training_test_manual(trainX, testX, trainY, testY, epochs=500, batch=20):
     :return:
     """
     model = create_model()
-    model.fit(trainX, trainY, nb_epoch=epochs, batch_size=batch, verbose=0)
-    resultados = model.evaluate(testX, testY, verbose=0)
+    model.fit(trainX, trainY, nb_epoch=epochs, batch_size=batch, verbose=2)
+    resultados = model.evaluate(testX, testY, verbose=2)
     print("%s: %.2f%%" % (model.metrics_names[0], resultados[0]*100))
     print("%s: %.2f%%" % (model.metrics_names[1], resultados[1]*100))
     saveModel(model, 1)
@@ -205,9 +205,9 @@ def main():
     type_learning = ['auto_neural', 'man_neural', 'svm', 'rfc', 'knn']
     type_learning = ['auto_neural', 'man_neural']
     #for i in range(len(fichero)):
-        #for j in range(len(type_learning)):
+    #for j in range(len(type_learning)):
             #selector(type_of_learning=type_learning[j], fichero=fichero[i], entradas=6)
-    selector(type_of_learning=type_learning, fichero=fichero2[2], entradas=30)
+    selector(type_of_learning=type_learning[0], fichero=fichero2[2], entradas=30)
 
 
 
