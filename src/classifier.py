@@ -204,10 +204,10 @@ def main():
                 ]
     type_learning = ['auto_neural', 'man_neural', 'svm', 'rfc', 'knn']
     type_learning = ['auto_neural', 'man_neural']
-    for i in range(len(fichero)):
+    #for i in range(len(fichero)):
         #for j in range(len(type_learning)):
             #selector(type_of_learning=type_learning[j], fichero=fichero[i], entradas=6)
-            selector(type_of_learning=type_learning, fichero=fichero2[i], entradas=30)
+    selector(type_of_learning=type_learning, fichero=fichero2[2], entradas=30)
 
 
 
