@@ -472,7 +472,7 @@ def five_final_data_creator(type):
 
 
 def main():
-    """getIBEX35('all')
+    getIBEX35('all')
     getDowJones('all')
     getNikkei('all')
     getEuroStock('all')
@@ -480,7 +480,7 @@ def main():
     getFranceStock('all')
     getAll('all')
     closeAll('all')
-    final_data_creator('all')"""
+    final_data_creator('all')
     five_final_data_creator('all')
 
 
