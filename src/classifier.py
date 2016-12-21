@@ -203,11 +203,10 @@ def main():
     fichero2 = ["5DayNormal.csv", "5DayChange.csv", "5DayRChange.csv", "5DayNormalized.csv"
                 ]
     type_learning = ['auto_neural', 'man_neural', 'svm', 'rfc', 'knn']
-    type_learning = ['auto_neural', 'man_neural']
-    #for i in range(len(fichero)):
-    #for j in range(len(type_learning)):
+    for i in range(len(fichero)):
+        for j in range(len(type_learning)):
             #selector(type_of_learning=type_learning[j], fichero=fichero[i], entradas=6)
-    selector(type_of_learning=type_learning[0], fichero=fichero2[2], entradas=30)
+            selector(type_of_learning=type_learning[j], fichero=fichero2[i], entradas=30)
 
 
 
